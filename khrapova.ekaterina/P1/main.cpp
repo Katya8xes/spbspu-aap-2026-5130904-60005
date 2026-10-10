@@ -60,7 +60,7 @@ int main()
     }
     prev2 = prev1;
     prev1 = x;
-        
+
   }
 
   if (std::cin.fail()) {
@@ -71,7 +71,7 @@ int main()
   std::cout << maxdlina << "\n";
 
   bool flag = true;
-    
+
   if (kol < 3) {
     std::cerr << "короткая последовательность\n";
     flag = false;
