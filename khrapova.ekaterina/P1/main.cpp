@@ -17,6 +17,8 @@ int main()
   const int error0 = 0;
   const size_t maxlen = std::numeric_limits< size_t >::max();
 
+  bool flag = true;
+
   while (std::cin >> x) {
     if (x == 0) {
       break;
@@ -25,7 +27,8 @@ int main()
 
     if (kol == maxlen) {
       std::cerr << "длинная последовательность\n";
-      return error2;
+      flag = false;
+      break;
     }
 
     if (x % 2 == 0) {
@@ -55,7 +58,10 @@ int main()
       } else {
         sum = prev1;
       }
-      if (!overflow && x == sum) {
+      if (overflow) {
+        std::cerr << "переполнение при сложении";
+        flag = false;
+      } else if (!overflow && x == sum) {
         sumprev += 1;
       }
     }
@@ -69,8 +75,6 @@ int main()
   }
 
   std::cout << maxdlina << "\n";
-
-  bool flag = true;
 
   if (kol < 3) {
     std::cerr << "короткая последовательность\n";
