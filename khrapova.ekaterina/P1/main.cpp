@@ -18,6 +18,7 @@ int main()
   const size_t maxlen = std::numeric_limits< size_t >::max();
 
   bool flag = true;
+  bool flag_sumprev = true;
 
   while (std::cin >> x) {
     if (x == 0) {
@@ -61,7 +62,8 @@ int main()
       if (overflow) {
         std::cerr << "переполнение при сложении";
         flag = false;
-      } else if (!overflow && x == sum) {
+        flag_sumprev = false;
+      } else if (flag_sumprev && x == sum) {
         sumprev += 1;
       }
     }
