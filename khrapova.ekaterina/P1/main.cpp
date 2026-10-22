@@ -17,31 +17,34 @@ int main()
   const int error0 = 0;
   const size_t maxlen = std::numeric_limits< size_t >::max();
 
-  bool flag = true;
+  bool flag_maxdlina = true;
   bool flag_sumprev = true;
 
   while (std::cin >> x) {
     if (x == 0) {
       break;
     }
-    kol += 1;
-
-    if (kol == maxlen) {
-      std::cerr << "длинная последовательность\n";
-      flag = false;
-      break;
+    if (kol < 3) {
+      kol += 1;
     }
 
     if (x % 2 == 0) {
-      nowdlina += 1;
-      if (nowdlina > maxdlina) {
-        maxdlina = nowdlina;
+      if (nowdlina == maxlen) {
+        if (flag_maxdlina) {
+          std::cerr << "переполнение длины серии чётных чисел\n";
+          flag_maxdlina = false;
+        }
+      } else {
+        nowdlina += 1;
+        if (nowdlina > maxdlina) {
+          maxdlina = nowdlina;
+        }
       }
     } else {
       nowdlina = 0;
     }
 
-    if (kol > 2) {
+    if (kol > 2 && flag_sumprev) {
       bool overflow = false;
       long long sum = 0;
       if (prev2 > 0) {
@@ -59,12 +62,13 @@ int main()
       } else {
         sum = prev1;
       }
-      if (overflow) {
-        std::cerr << "переполнение при сложении";
-        flag = false;
-        flag_sumprev = false;
-      } else if (flag_sumprev && x == sum) {
-        sumprev += 1;
+      if (!overflow && x == sum) {
+        if (sumprev == maxlen) {
+          std::cerr << "переполнение счётчика совпадений\n";
+          flag_sumprev = false;
+        } else {
+          sumprev += 1;
+        }
       }
     }
     prev2 = prev1;
@@ -76,18 +80,19 @@ int main()
     return error1;
   }
 
-  std::cout << maxdlina << "\n";
+  if (flag_maxdlina) {
+    std::cout << maxdlina << "\n";
+  }
 
   if (kol < 3) {
     std::cerr << "короткая последовательность\n";
-    flag = false;
-  } else {
+    flag_sumprev = false;
+  } else if (flag_sumprev) {
     std::cout << sumprev << "\n";
   }
 
-  if (flag) {
+  if (flag_sumprev && flag_maxdlina) {
     return error0;
-  } else {
-    return error2;
   }
+  return error2;
 }
