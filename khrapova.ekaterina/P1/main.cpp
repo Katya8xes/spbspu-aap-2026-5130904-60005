@@ -30,10 +30,7 @@ int main()
 
     if (x % 2 == 0) {
       if (nowdlina == maxlen) {
-        if (flag_maxdlina) {
-          std::cerr << "переполнение длины серии чётных чисел\n";
-          flag_maxdlina = false;
-        }
+        flag_maxdlina = false;
       } else {
         nowdlina += 1;
         if (nowdlina > maxdlina) {
@@ -64,7 +61,6 @@ int main()
       }
       if (!overflow && x == sum) {
         if (sumprev == maxlen) {
-          std::cerr << "переполнение счётчика совпадений\n";
           flag_sumprev = false;
         } else {
           sumprev += 1;
@@ -80,14 +76,18 @@ int main()
     return error1;
   }
 
-  if (flag_maxdlina) {
-    std::cout << maxdlina << "\n";
+  if (!flag_maxdlina) {
+    std::cerr << "переполнение длины серии чётных чисел\n";
+  } else {
+      std::cout << maxdlina << "\n";
   }
 
   if (kol < 3) {
     std::cerr << "короткая последовательность\n";
     flag_sumprev = false;
-  } else if (flag_sumprev) {
+  } else if (!flag_sumprev) {
+    std::cerr << "переполнение счётчика совпадений\n";
+  } else {
     std::cout << sumprev << "\n";
   }
 
