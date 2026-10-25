@@ -2,7 +2,8 @@
 #include <iostream>
 #include <limits>
 
-int main() {
+int main()
+{
   long long x = 0;
   size_t nowdlina = 0;
   size_t maxdlina = 0;
@@ -14,7 +15,7 @@ int main() {
   const int error1 = 1;
   const int error2 = 2;
   const int error0 = 0;
-  const size_t maxlen = std::numeric_limits<size_t>::max();
+  const size_t maxlen = std::numeric_limits< size_t >::max();
 
   bool flag_maxdlina = true;
   bool flag_sumprev = true;
@@ -44,13 +45,13 @@ int main() {
       bool overflow = false;
       long long sum = 0;
       if (prev2 > 0) {
-        if (prev1 > std::numeric_limits<long long>::max() - prev2) {
+        if (prev1 > std::numeric_limits< long long >::max() - prev2) {
           overflow = true;
         } else {
           sum = prev1 + prev2;
         }
       } else if (prev2 < 0) {
-        if (prev1 < std::numeric_limits<long long>::min() - prev2) {
+        if (prev1 < std::numeric_limits< long long >::min() - prev2) {
           overflow = true;
         } else {
           sum = prev1 + prev2;
