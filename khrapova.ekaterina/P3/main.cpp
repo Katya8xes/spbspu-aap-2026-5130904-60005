@@ -159,7 +159,7 @@ int main(int argc, char** argv)
   const std::size_t cols = static_cast< std::size_t >(c_ll);
 
   if (rows == 0 && cols == 0) {
-    if (write_results(output_path, 0, true, 0, true)) {
+    if (writeResults(output_path, 0, true, 0, true)) {
       return success;
     }
     return error_data;
@@ -223,12 +223,12 @@ int main(int argc, char** argv)
     bool overflow13 = false;
     bool overflow14 = false;
 
-    res13 = max_sum_pob(data_block, cols, size, overflow13);
+    res13 = maxSumPob(data_block, cols, size, overflow13);
     if (overflow13) {
       ok13 = false;
     }
 
-    res14 = max_sum_glav(data_block, cols, size, overflow14);
+    res14 = maxSumGlav(data_block, cols, size, overflow14);
     if (overflow14) {
       ok14 = false;
     }
@@ -277,12 +277,12 @@ int main(int argc, char** argv)
     bool overflow13 = false;
     bool overflow14 = false;
 
-    res13 = max_sum_pob(data_block, cols, size, overflow13);
+    res13 = maxSumPob(data_block, cols, size, overflow13);
     if (overflow13) {
       ok13 = false;
     }
 
-    res14 = max_sum_glav(data_block, cols, size, overflow14);
+    res14 = maxSumGlav(data_block, cols, size, overflow14);
     if (overflow14) {
       ok14 = false;
     }
@@ -290,7 +290,7 @@ int main(int argc, char** argv)
     delete[] data_block;
   }
 
-  if (!write_results(output_path, res13, ok13, res14, ok14)) {
+  if (!writeResults(output_path, res13, ok13, res14, ok14)) {
     return error_data;
   }
 
