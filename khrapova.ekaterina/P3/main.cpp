@@ -11,7 +11,7 @@ namespace khrapova {
   const int success = 0;
   const std::size_t fixed_size = 10000;
 
-  long long max_sum_pob(const int* const matrix, std::size_t cols, std::size_t size, bool& overflow)
+  long long maxSumPob(const int* const matrix, std::size_t cols, std::size_t size, bool& overflow)
   {
     overflow = false;
     if (size <= 1) {
@@ -20,7 +20,7 @@ namespace khrapova {
 
     long long max_sum = std::numeric_limits< long long >::min();
     bool found = false;
-    std::size_t max_sum_idx = (size - 1) + (size - 1);
+    const std::size_t max_sum_idx = (size - 1) + (size - 1);
 
     for (std::size_t s = 0; s <= max_sum_idx; ++s) {
       if (s != size - 1) {
@@ -28,9 +28,9 @@ namespace khrapova {
         bool has_elements = false;
         for (std::size_t r = 0; r < size; ++r) {
           if (s >= r) {
-            std::size_t c = s - r;
+            const std::size_t c = s - r;
             if (c < size) {
-              int val = matrix[r * cols + c];
+              const int val = matrix[r * cols + c];
               if (val > 0 && current_sum > std::numeric_limits< long long >::max() - val) {
                 overflow = true;
                 return 0;
@@ -58,7 +58,7 @@ namespace khrapova {
     return 0;
   }
 
-  long long max_sum_glav(const int* const matrix, std::size_t cols, std::size_t size, bool& overflow)
+  long long maxSumGlav(const int* const matrix, std::size_t cols, std::size_t size, bool& overflow)
   {
     overflow = false;
     if (size <= 1) {
@@ -67,17 +67,17 @@ namespace khrapova {
 
     long long max_sum = std::numeric_limits< long long >::min();
     bool found = false;
-    long long min_diff = -static_cast< long long >(size) + 1;
-    long long max_diff = static_cast< long long >(size) - 1;
+    const long long min_diff = -static_cast< long long >(size) + 1;
+    const long long max_diff = static_cast< long long >(size) - 1;
 
     for (long long diff = min_diff; diff <= max_diff; ++diff) {
       if (diff != 0) {
         long long current_sum = 0;
         bool has_elements = false;
         for (std::size_t r = 0; r < size; ++r) {
-          long long c_ll = static_cast< long long >(r) - diff;
+          const long long c_ll = static_cast< long long >(r) - diff;
           if (c_ll >= 0 && c_ll < static_cast< long long >(size)) {
-            int val = matrix[r * cols + c_ll];
+            const int val = matrix[r * cols + c_ll];
             if (val > 0 && current_sum > std::numeric_limits< long long >::max() - val) {
               overflow = true;
               return 0;
@@ -104,7 +104,7 @@ namespace khrapova {
     return 0;
   }
 
-  bool write_results(const char* output_path, long long res13, bool ok13, long long res14, bool ok14)
+  bool writeResults(const char* output_path, long long res13, bool ok13, long long res14, bool ok14)
   {
     std::ofstream output(output_path);
     if (!output) {
@@ -140,8 +140,8 @@ int main(int argc, char** argv)
     is_dynamic = true;
   }
 
-  const char* input_path = argv[2];
-  const char* output_path = argv[3];
+  const char* const input_path = argv[2];
+  const char* const output_path = argv[3];
 
   std::ifstream input(input_path);
   if (!input) {
@@ -155,8 +155,8 @@ int main(int argc, char** argv)
     return error_data;
   }
 
-  std::size_t rows = static_cast< std::size_t >(r_ll);
-  std::size_t cols = static_cast< std::size_t >(c_ll);
+  const std::size_t rows = static_cast< std::size_t >(r_ll);
+  const std::size_t cols = static_cast< std::size_t >(c_ll);
 
   if (rows == 0 && cols == 0) {
     if (write_results(output_path, 0, true, 0, true)) {
@@ -193,7 +193,7 @@ int main(int argc, char** argv)
     bool read_error = false;
     for (std::size_t i = 0; i < rows; ++i) {
       for (std::size_t j = 0; j < cols; ++j) {
-        long long val;
+        long long val = 0;
         if (!(input >> val)) {
           read_error = true;
           break;
@@ -214,7 +214,7 @@ int main(int argc, char** argv)
       return error_data;
     }
 
-    char extra_char;
+    char extra_char = 0;
     if (input >> extra_char) {
       std::cerr << "в файле содержатся лишние данные\n";
       return error_data;
@@ -245,7 +245,7 @@ int main(int argc, char** argv)
     bool read_error = false;
     for (std::size_t i = 0; i < rows; ++i) {
       for (std::size_t j = 0; j < cols; ++j) {
-        long long val;
+        long long val = 0;
         if (!(input >> val)) {
           read_error = true;
           break;
@@ -267,7 +267,7 @@ int main(int argc, char** argv)
       return error_data;
     }
 
-    char extra_char;
+    char extra_char = 0;
     if (input >> extra_char) {
       std::cerr << "в файле содержатся лишние данные\n";
       delete[] data_block;
