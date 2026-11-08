@@ -10,6 +10,8 @@ namespace khrapova
   const int success = 0;
   const int input_error_code = 1;
   const int memory_error_code = 1;
+  const size_t alphabet_size = 26;
+  const size_t initial_memory = 16;
 
   char *appendDigits(char *dest, const char *src)
   {
@@ -29,11 +31,11 @@ namespace khrapova
   {
     for (size_t i = 0; s[i] != '\0'; ++i)
     {
-      unsigned char c = static_cast< unsigned char >(s[i]);
+      const unsigned char c = static_cast< unsigned char >(s[i]);
       if (std::isalpha(c))
       {
-        int idx = std::tolower(c) - 'a';
-        if (idx >= 0 && idx < 26)
+        const int idx = std::tolower(c) - 'a';
+        if (idx >= 0 && static_cast< size_t >(idx) < alphabet_size)
         {
           seen[idx] = true;
         }
@@ -43,11 +45,11 @@ namespace khrapova
 
   char *makeLatinUnion(char *dest, const char *src1, const char *src2)
   {
-    bool seen[26] = {};
+    bool seen[alphabet_size] = {};
     markLetters(seen, src1);
     markLetters(seen, src2);
     size_t n = 0;
-    for (int i = 0; i < 26; ++i)
+    for (size_t i = 0; i < alphabet_size; ++i)
     {
       if (seen[i])
       {
@@ -60,7 +62,7 @@ namespace khrapova
 
   char *readString(std::istream &in)
   {
-    size_t memory = 16;
+    size_t memory = initial_memory;
     size_t length = 0;
     char *buffer = nullptr;
 
@@ -78,21 +80,21 @@ namespace khrapova
     {
       if (length + 1 >= memory)
       {
-        size_t newMemory = memory * 2;
-        char *newBuffer = nullptr;
+        const size_t new_memory = memory * 2;
+        char *new_buffer = nullptr;
         try
         {
-          newBuffer = new char[newMemory];
+          new_buffer = new char[new_memory];
         }
         catch (const std::bad_alloc &)
         {
           delete[] buffer;
           return nullptr;
         }
-        std::memcpy(newBuffer, buffer, length);
+        std::memcpy(new_buffer, buffer, length);
         delete[] buffer;
-        buffer = newBuffer;
-        memory = newMemory;
+        buffer = new_buffer;
+        memory = new_memory;
       }
       buffer[length++] = c;
     }
@@ -115,43 +117,43 @@ namespace khrapova
 
   int process(std::istream &in, std::ostream &out, std::ostream &err)
   {
-    const char *second16 = "g1h2k";
-    const char *second20 = "def_ghk";
+    const char *const second16 = "g1h2k";
+    const char *const second20 = "def_ghk";
 
-    char *mainString = readString(in);
-    if (mainString == nullptr)
+    char *const main_string = readString(in);
+    if (main_string == nullptr)
     {
       err << "не удалось выделить память\n";
       return memory_error_code;
     }
-    if (in.bad())
+    if (in.bad() || main_string[0] == '\0')
     {
       err << "не удалось считать строку\n";
-      delete[] mainString;
+      delete[] main_string;
       return input_error_code;
     }
 
-    char *result16 = allocate(std::strlen(mainString) + std::strlen(second16) + 1);
-    char *result20 = allocate(27);
+    char *const result16 = allocate(std::strlen(main_string) + std::strlen(second16) + 1);
+    char *const result20 = allocate(alphabet_size + 1);
     if (result16 == nullptr || result20 == nullptr)
     {
       err << "не удалось выделить память\n";
       delete[] result16;
       delete[] result20;
-      delete[] mainString;
+      delete[] main_string;
       return memory_error_code;
     }
 
-    std::strcpy(result16, mainString);
+    std::strcpy(result16, main_string);
     appendDigits(result16, second16);
-    makeLatinUnion(result20, mainString, second20);
+    makeLatinUnion(result20, main_string, second20);
 
-    out << result16 << '\n';
     out << result20 << '\n';
+    out << result16 << '\n';
 
     delete[] result16;
     delete[] result20;
-    delete[] mainString;
+    delete[] main_string;
     return success;
   }
 
